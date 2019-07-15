@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+namespace就是用来隔离sql语句的
+-->
+<mapper namespace="com.ssm.mapper.UserMapper" >
+    <resultMap id="BaseUserMap" type="user">
+        <id column="user_id" property="userId"/>
+        <result column="user_account" property="userAccount"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="headimageurl" property="headImageUrl"/>
+        <result column="mobile_number" property="mobileNumber"/>
+        <result column="email" property="email"/>
+        <result column="status" property="status"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="sex" property="sex"/>
+        <result column="modify_user_id" property="modifyUserId"/>
+    </resultMap>
+
+    <!--queryUserByNameAndPwd-->
+    <select id="queryUserByNameAndPwd" resultMap="BaseUserMap">
+
+        select * from sy_user where user_account=#{username} and password=#{password}
+        and status=1
+    </select>
+
+    <!--    boolean addUser(User user);-->
+
+    <insert id="addUser">
+        insert into sy_user(user_account,password,sex,headimageurl,email,mobile_number,create_time)
+        values(#{userAccount},#{password},#{sex},#{headImageUrl},#{email},#{mobileNumber},#{createTime})
+
+    </insert>
+
+    <!--selectUsers-->
+    <select id="selectUsers" resultMap="BaseUserMap">
+        select * from sy_user
+
+        <where>
+            <if test="uname!=null and  uname!=''">
+
+                and user_account like concat("%",#{uname},"%")
+            </if>
+        </where>
+    </select>
+</mapper>
